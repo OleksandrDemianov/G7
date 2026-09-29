@@ -8,3 +8,9 @@ obj/
 
 __pycache__/
 *.pyc
+
+# MATLAB / Simulink
+slprj/
+*.slxc
+*.autosave
+*.asv
