@@ -1,4 +1,3 @@
-
 (* Stop cycle or start on rising edge *)
 IF stopButton THEN
     cycleActive := FALSE;
