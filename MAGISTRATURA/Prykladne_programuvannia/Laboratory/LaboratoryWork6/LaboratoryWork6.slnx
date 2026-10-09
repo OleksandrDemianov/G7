@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="GrainStorageScada.Web/GrainStorageScada.Web.csproj" Id="5cc8f2d9-9ac8-4973-aff3-06966572f1f6" />
+  <Project Path="LaboratoryWork5.Components/LaboratoryWork5.Components.csproj" Id="a8a5432b-ad45-461e-9d14-aed5ef1657bc" />
+  <Project Path="LaboratoryWork5/LaboratoryWork5.csproj" />
+</Solution>

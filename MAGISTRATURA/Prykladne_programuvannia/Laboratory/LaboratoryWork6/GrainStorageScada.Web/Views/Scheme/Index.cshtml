@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Мнемосхема зернохранилища";
+}
+
+<div class="container-fluid">
+    <h2 class="text-center mb-4">
+        Мнемосхема зернохранилища
+    </h2>
+
+    <div class="row text-center mb-4">
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h5>Температура зерна</h5>
+                <h3 id="temperature-value">—</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h5>Вологість зерна</h5>
+                <h3 id="humidity-value">—</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h5>Рівень зерна</h5>
+                <h3 id="level-value">—</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <img src="/images/grain-storage-scheme.png"
+             alt="Схема технологічного процесу автоматизованої системи зберігання зерна"
+             class="img-fluid"
+             style="width: 100%; height: auto;" />
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/scheme.js"></script>
+}
+
