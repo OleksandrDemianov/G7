@@ -1,6 +1,14 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Мнемосхема зерносховища";
+
+    var uk = new System.Globalization.CultureInfo("uk-UA");
+    DateTime today = DateTime.Today;
+    DateTime first = new DateTime(today.Year, today.Month, 1);
+    int offset = ((int)first.DayOfWeek + 6) % 7;
+    int days = DateTime.DaysInMonth(today.Year, today.Month);
 }
+
 
 <div class="container-fluid">
     <h2 class="text-center mb-4">
@@ -30,12 +38,60 @@
         </div>
     </div>
 
-    <div class="text-center">
+    
+<div class="row align-items-start g-3">
+
+    <div class="col-12 col-xl-9 text-center">
         <img src="/images/grain-storage-scheme.png"
              alt="Схема технологічного процесу автоматизованої системи зберігання зерна"
              class="img-fluid"
              style="width: 100%; height: auto;" />
     </div>
+
+    <div class="col-12 col-xl-3">
+        <table class="cal">
+            <caption>
+                @uk.TextInfo.ToTitleCase(today.ToString("MMMM yyyy", uk))
+            </caption>
+            <thead>
+                <tr>
+                    <th>Пн</th>
+                    <th>Вт</th>
+                    <th>Ср</th>
+                    <th>Чт</th>
+                    <th>Пт</th>
+                    <th>Сб</th>
+                    <th>Нд</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @for (int i = 0; i < offset; i++)
+                    {
+                        <td></td>
+                    }
+
+                    @for (int d = 1; d <= days; d++)
+                    {
+                        bool isWeekend = (offset + d - 1) % 7 >= 5;
+                        string css = d == today.Day
+                            ? "today"
+                            : (isWeekend ? "weekend" : "");
+
+                        <td class="@css">@d</td>
+
+                        if ((offset + d) % 7 == 0 && d < days)
+                        {
+                            @:</tr><tr>
+                        }
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
 </div>
 
 @section Scripts {
