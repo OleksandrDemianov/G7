@@ -24,9 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 const element = document.getElementById(elementId);
 
                 if (element) {
-                    element.textContent =
-                        `${reading.value.toFixed(2)} ${reading.unit}`;
-                }
+    const unit = reading.topic === "grainstorage/1/sensors/temperature"
+        ? "°C"
+        : reading.unit;
+
+    element.textContent =
+        `${reading.value.toFixed(2)} ${unit}`;
+}
             }
         } catch (error) {
             console.error("Помилка отримання показань:", error);

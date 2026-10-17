@@ -8,7 +8,7 @@ namespace GrainStorageScada.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Scheme");
         }
 
         public IActionResult Privacy()
@@ -23,3 +23,4 @@ namespace GrainStorageScada.Web.Controllers
         }
     }
 }
+
