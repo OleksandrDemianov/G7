@@ -1,13 +1,12 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Параметры динамического объекта
+# Параметри динамічного об'єкта
 ambient_temperature = 20.0
 heating_coefficient = 0.08
 cooling_coefficient = 0.02
 
-# Модель изменения температуры
+# Модель зміни температури
 def plant_model(temperature, control):
     return (
         temperature
@@ -15,17 +14,17 @@ def plant_model(temperature, control):
         - cooling_coefficient * (temperature - ambient_temperature)
     )
 
-# Начальные условия
+# Початкові умови
 temperature = 20.0
 control = 5.0
 temperatures = [temperature]
 
-# Моделирование объекта
+# Моделювання об'єкта
 for step in range(100):
     temperature = plant_model(temperature, control)
     temperatures.append(temperature)
 
-# Построение графика
+# Побудова графіка
 plt.plot(temperatures, label="Object temperature")
 plt.xlabel("Time step")
 plt.ylabel("Temperature, °C")
