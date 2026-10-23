@@ -5,5 +5,6 @@ namespace GrainStorageScada.Web.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
     {
+        public DbSet<SensorSample> SensorSamples => Set<SensorSample>();
     }
 }

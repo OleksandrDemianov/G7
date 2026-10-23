@@ -24,13 +24,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 const element = document.getElementById(elementId);
 
                 if (element) {
-    const unit = reading.topic === "grainstorage/1/sensors/temperature"
-        ? "°C"
-        : reading.unit;
+                    const unit = reading.topic === "grainstorage/1/sensors/temperature"
+                        ? "°C"
+                        : reading.unit;
 
-    element.textContent =
-        `${reading.value.toFixed(2)} ${unit}`;
-}
+                    element.textContent =
+                        `${reading.value.toFixed(2)} ${unit}`;
+
+                    if (reading.topic === "grainstorage/1/sensors/temperature") {
+                        element.style.color = reading.value > 28 ? "red" : "white";
+                    }
+
+                    if (reading.topic === "grainstorage/1/sensors/humidity") {
+                        element.style.color = reading.value > 14 ? "red" : "white";
+                    }
+
+                    if (reading.topic === "grainstorage/1/sensors/level") {
+                        element.style.color = reading.value > 80 ? "red" : "white";
+                    }
+                }
             }
         } catch (error) {
             console.error("Помилка отримання показань:", error);

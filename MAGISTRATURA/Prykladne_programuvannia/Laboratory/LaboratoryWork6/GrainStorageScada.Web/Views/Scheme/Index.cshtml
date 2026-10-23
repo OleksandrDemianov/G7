@@ -36,7 +36,7 @@
 
 </div>
 
-    <div class="flex-shrink-0 d-flex justify-content-center" style="width: 300px; transform: translateX(-15px);">
+        <div class="flex-shrink-0 d-flex flex-column align-items-center" style="width: 300px; transform: translateX(-15px);">
         <table class="cal">
             <caption>
                 @uk.TextInfo.ToTitleCase(today.ToString("MMMM yyyy", uk))
@@ -76,13 +76,19 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+                    <form method="post" asp-controller="Scheme" asp-action="Save"
+                          class="mt-3 text-center">
+                        <button type="submit" class="btn btn-success">
+                            Зберегти показання
+                        </button>
+                    </form>
 
-</div>
+                </div>
 
 </div>
 
 @section Scripts {
     <script src="~/js/scheme.js"></script>
 }
+
 
