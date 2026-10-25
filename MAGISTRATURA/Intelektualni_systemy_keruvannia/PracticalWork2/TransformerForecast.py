@@ -158,7 +158,7 @@ class TransformerForecast(nn.Module):
 
         return self.output_layer(x[:, -1, :])
 
-    # Створення моделі Transformer
+# Створення моделі Transformer
 torch.manual_seed(42)
 
 model = TransformerForecast()
