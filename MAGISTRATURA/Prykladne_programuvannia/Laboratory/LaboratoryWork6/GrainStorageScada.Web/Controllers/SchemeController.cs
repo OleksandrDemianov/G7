@@ -1,6 +1,8 @@
-﻿using GrainStorageScada.Web.Data;
+﻿
+using GrainStorageScada.Web.Data;
 using GrainStorageScada.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GrainStorageScada.Web.Controllers
 {
@@ -30,7 +32,7 @@ namespace GrainStorageScada.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Save()
+        public async Task<IActionResult> Save()
         {
             foreach (var r in _cache.GetAll())
             {
@@ -43,19 +45,20 @@ namespace GrainStorageScada.Web.Controllers
                 });
             }
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             return RedirectToAction("History");
         }
 
-        public IActionResult History()
+        public async Task<IActionResult> History()
         {
-            var samples = _db.SensorSamples
+            var samples = await _db.SensorSamples
                 .OrderByDescending(s => s.Id)
                 .Take(50)
-                .ToList();
+                .ToListAsync();
 
             return View(samples);
         }
     }
 }
+
