@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const response = await fetch("/Scheme/Readings");
 
+            if (response.redirected) {
+                window.location.reload();
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}`);
             }

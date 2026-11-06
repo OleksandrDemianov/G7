@@ -1,11 +1,13 @@
 ﻿
 using GrainStorageScada.Web.Data;
 using GrainStorageScada.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GrainStorageScada.Web.Controllers
 {
+    [Authorize]
     public class SchemeController : Controller
     {
         private readonly LiveValuesCache _cache;
@@ -32,6 +34,7 @@ namespace GrainStorageScada.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "CanReadSavings")]
         public async Task<IActionResult> Save()
         {
             foreach (var r in _cache.GetAll())
