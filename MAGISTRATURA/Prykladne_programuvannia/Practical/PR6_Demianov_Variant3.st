@@ -1,4 +1,3 @@
-
 updateTimer(NOT updateTimer.Q, 2);
 
 IF updateTimer.Q THEN
