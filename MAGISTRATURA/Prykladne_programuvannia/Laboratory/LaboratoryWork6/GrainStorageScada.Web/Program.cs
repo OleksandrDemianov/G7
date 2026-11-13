@@ -12,9 +12,48 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+
+    // Вимоги до пароля
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+
+    // Блокування облікового запису
+    options.Lockout.MaxFailedAccessAttempts = 3;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.AllowedForNewUsers = true;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "GrainStorageScada.Auth";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    options.SlidingExpiration = true;
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
+
+
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.RazorPages.RazorPagesOptions>(options =>
+{
+    options.Conventions.AllowAnonymousToAreaPage(
+        "Identity", "/Account/Login");
+
+    options.Conventions.AllowAnonymousToAreaPage(
+        "Identity", "/Account/Register");
+});
+
 
 builder.Services.AddAuthorization(options =>
 {
