@@ -1,0 +1,29 @@
+﻿@model List<GrainStorageScada.Web.Data.LoginEvent>
+
+@{
+    ViewData["Title"] = "Журнал входів";
+}
+
+<h2>Журнал входів операторів</h2>
+
+<table class="table table-sm table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Час</th>
+            <th>Користувач</th>
+            <th>Результат</th>
+            <th>IP-адреса</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr class="@(e.Succeeded ? "" : "table-danger")">
+                <td>@e.TimeUtc.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+                <td>@e.UserName</td>
+                <td>@e.Result</td>
+                <td>@e.IpAddress</td>
+            </tr>
+        }
+    </tbody>
+</table>

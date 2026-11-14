@@ -37,6 +37,8 @@ namespace GrainStorageScada.Web.Controllers
         [Authorize(Policy = "CanReadSavings")]
         public async Task<IActionResult> Save()
         {
+            string userName = User.Identity?.Name ?? "unknown";
+
             foreach (var r in _cache.GetAll())
             {
                 _db.SensorSamples.Add(new SensorSample
@@ -44,7 +46,8 @@ namespace GrainStorageScada.Web.Controllers
                     Topic = r.Topic,
                     Value = r.Value,
                     Unit = r.Unit,
-                    MeasuredAtUtc = r.MeasuredAtUtc
+                    MeasuredAtUtc = r.MeasuredAtUtc,
+                    SavedBy = userName
                 });
             }
 

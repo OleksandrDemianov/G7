@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GrainStorageScada.Web.Data
@@ -6,5 +7,8 @@ namespace GrainStorageScada.Web.Data
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
     {
         public DbSet<SensorSample> SensorSamples => Set<SensorSample>();
+
+        public DbSet<LoginEvent> LoginEvents => Set<LoginEvent>();
     }
 }
+
