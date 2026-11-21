@@ -1,5 +1,4 @@
-﻿
-document.addEventListener("DOMContentLoaded", () => {
+﻿document.addEventListener("DOMContentLoaded", () => {
     const sensors = {
         "grainstorage/1/sensors/temperature": "temperature-value",
         "grainstorage/1/sensors/humidity": "humidity-value",
@@ -9,17 +8,19 @@ document.addEventListener("DOMContentLoaded", () => {
     async function updateReadings() {
         try {
             const response = await fetch("/Scheme/Readings");
+            const thresholdResponse = await fetch("/Scheme/Thresholds");
 
-            if (response.redirected) {
+            if (response.redirected || thresholdResponse.redirected) {
                 window.location.reload();
                 return;
             }
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+            if (!response.ok || !thresholdResponse.ok) {
+                throw new Error("Помилка HTTP-запиту");
             }
 
             const readings = await response.json();
+            const thresholds = await thresholdResponse.json();
 
             for (const reading of readings) {
                 const elementId = sensors[reading.topic];
@@ -36,17 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     element.textContent =
                         `${reading.value.toFixed(2)} ${unit}`;
 
-                    if (reading.topic === "grainstorage/1/sensors/temperature") {
-                        element.style.color = reading.value > 28 ? "red" : "white";
-                    }
+                    const max = thresholds[reading.topic];
 
-                    if (reading.topic === "grainstorage/1/sensors/humidity") {
-                        element.style.color = reading.value > 14 ? "red" : "white";
-                    }
-
-                    if (reading.topic === "grainstorage/1/sensors/level") {
-                        element.style.color = reading.value > 80 ? "red" : "white";
-                    }
+                    element.style.color =
+                        max !== undefined && reading.value > max
+                            ? "red"
+                            : "white";
                 }
             }
         } catch (error) {
@@ -57,4 +53,3 @@ document.addEventListener("DOMContentLoaded", () => {
     updateReadings();
     setInterval(updateReadings, 2000);
 });
-

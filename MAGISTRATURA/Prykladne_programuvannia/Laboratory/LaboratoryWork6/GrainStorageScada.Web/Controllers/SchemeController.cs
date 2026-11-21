@@ -12,13 +12,16 @@ namespace GrainStorageScada.Web.Controllers
     {
         private readonly LiveValuesCache _cache;
         private readonly ApplicationDbContext _db;
+        private readonly SchemeConfigService _scheme;
 
         public SchemeController(
             LiveValuesCache cache,
-            ApplicationDbContext db)
+            ApplicationDbContext db,
+            SchemeConfigService scheme)
         {
             _cache = cache;
             _db = db;
+            _scheme = scheme;
         }
 
         public IActionResult Index()
@@ -30,6 +33,12 @@ namespace GrainStorageScada.Web.Controllers
         public IActionResult Readings()
         {
             return Json(_cache.GetAll());
+        }
+
+        [HttpGet]
+        public IActionResult Thresholds()
+        {
+            return Json(_scheme.GetThresholds());
         }
 
         [HttpPost]

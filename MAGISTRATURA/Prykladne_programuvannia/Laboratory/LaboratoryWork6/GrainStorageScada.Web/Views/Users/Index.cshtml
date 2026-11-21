@@ -1,0 +1,51 @@
+﻿@model List<GrainStorageScada.Web.Models.UserRoleRow>
+
+<h2>Керування користувачами</h2>
+
+<p class="text-success">@TempData["Message"]</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Електронна адреса</th>
+            <th>Роль користувача</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.Email</td>
+                <td>
+                    <form method="post"
+                          asp-action="SetRole"
+                          class="d-flex gap-2">
+
+                        <input type="hidden"
+                               name="id"
+                               value="@u.Id" />
+
+                        <select name="role"
+                                class="form-select w-auto">
+
+                            @foreach (string r in (string[])ViewBag.Roles)
+                            {
+                                <option value="@r"
+                                        selected="@(r == u.Role)">
+                                    @r
+                                </option>
+                            }
+
+                        </select>
+
+                        <button class="btn btn-primary">
+                            Застосувати
+                        </button>
+
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

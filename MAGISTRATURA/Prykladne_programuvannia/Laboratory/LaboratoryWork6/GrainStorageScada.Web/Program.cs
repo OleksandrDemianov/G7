@@ -3,6 +3,7 @@ using GrainStorageScada.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using GrainStorageScada.Web.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,9 +28,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.Lockout.MaxFailedAccessAttempts = 3;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.AllowedForNewUsers = true;
-})
-.AddEntityFrameworkStores<ApplicationDbContext>();
 
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -41,6 +43,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.FromMinutes(1);
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -63,15 +69,31 @@ builder.Services.AddAuthorization(options =>
 
     options.AddPolicy("CanReadSavings", policy =>
     {
-        policy.RequireAuthenticatedUser();
+        policy.RequireRole(
+            AppRoles.Operator,
+            AppRoles.Technician,
+            AppRoles.Admin);
+    });
+
+    options.AddPolicy("CanConfigure", policy =>
+    {
+        policy.RequireRole(
+            AppRoles.Technician,
+            AppRoles.Admin);
     });
 });
 
 // Реєстрація сервісів SCADA
 builder.Services.AddSingleton<LiveValuesCache>();
+builder.Services.AddSingleton<SchemeConfigService>();
 builder.Services.AddHostedService<MqttListener>();
 
 var app = builder.Build();
+
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

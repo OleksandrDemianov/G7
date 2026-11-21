@@ -1,12 +1,12 @@
-﻿
-using GrainStorageScada.Web.Data;
+﻿using GrainStorageScada.Web.Data;
+using GrainStorageScada.Web.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GrainStorageScada.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = AppRoles.Admin)]
     public class JournalController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -27,4 +27,3 @@ namespace GrainStorageScada.Web.Controllers
         }
     }
 }
-

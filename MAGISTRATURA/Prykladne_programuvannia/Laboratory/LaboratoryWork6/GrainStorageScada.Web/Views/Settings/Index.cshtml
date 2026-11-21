@@ -1,0 +1,53 @@
+﻿@model Dictionary<string, int>
+
+<h2>Налаштування порогів тривоги</h2>
+
+<p class="text-success">@TempData["Message"]</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Датчик</th>
+            <th>Поріг тривоги</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var sensor in Model)
+        {
+            string name = sensor.Key switch
+            {
+                "grainstorage/1/sensors/temperature"
+                    => "Температура зерна (°C)",
+                "grainstorage/1/sensors/humidity"
+                    => "Вологість зерна (%)",
+                "grainstorage/1/sensors/level"
+                    => "Рівень зерна (%)",
+                _ => sensor.Key
+            };
+
+            <tr>
+                <td>@name</td>
+                <td>
+                    <form method="post"
+                          asp-action="UpdateMax"
+                          class="d-flex gap-2">
+
+                        <input type="hidden"
+                               name="topic"
+                               value="@sensor.Key" />
+
+                        <input type="number"
+                               name="max"
+                               value="@sensor.Value"
+                               class="form-control w-auto" />
+
+                        <button class="btn btn-warning">
+                            Зберегти
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
